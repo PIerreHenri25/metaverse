@@ -23,9 +23,14 @@ a{color:#343436;background:#94D2DE;padding:14px 22px;border-radius:12px;text-dec
 <a id="ouvrir" href="https://script.google.com/a/macros/metasports.fr/s/AKfycbykckuBffl6P-GbllPfUTx4w87-5AsPyBc832FzRxU35mHxaYIFk7OEr_TeLd6O4f12/exec">Ouvrir le Méta'verse</a>
 <script>
 // revenu ici par « retour » : on laisse le bouton, sans renvoyer une seconde fois
-var retour = false;
-try { retour = sessionStorage.getItem('parti') === '1'; sessionStorage.setItem('parti', '1'); } catch (e) {}
-if (!retour) location.href = document.getElementById('ouvrir').href;
+var retour = false, emploi = false;
+// onglet où le mode d'emploi est ouvert (iPhone) : un rechargement y revient, sans partir vers le Méta'verse
+try { emploi = sessionStorage.getItem('emploi') === '1'; } catch (e) {}
+if (emploi) location.replace('installer.html');
+else {
+  try { retour = sessionStorage.getItem('parti') === '1'; sessionStorage.setItem('parti', '1'); } catch (e) {}
+  if (!retour) location.href = document.getElementById('ouvrir').href;
+}
 </script>
 </body>
 </html>

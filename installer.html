@@ -63,17 +63,21 @@ b{font-weight:650}
   <button class="voir-autre" id="bascule" hidden>Voir pour l'autre type de téléphone</button>
 
   <p class="bas">La première fois, Google te demande ton compte METASPORTS.<br>
-  <a href="./">Ouvrir le Méta'verse maintenant</a></p>
+  <a href="https://script.google.com/a/macros/metasports.fr/s/AKfycbykckuBffl6P-GbllPfUTx4w87-5AsPyBc832FzRxU35mHxaYIFk7OEr_TeLd6O4f12/exec">Ouvrir le Méta'verse maintenant</a></p>
 </main>
 <script>
-// L'icône doit garder l'adresse de la porte d'entrée (./), pas celle de ce mode d'emploi.
-try { history.replaceState(null, '', './'); } catch (e) {}
 // On ne montre que le téléphone de la personne ; un bouton donne l'autre.
 var ua = navigator.userAgent || '';
 var android = /Android/.test(ua);
 var ios = !android && (/iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
 // iPhone : sans manifeste, l'icône ouvre Safari, où le compte Google est déjà connu.
-if (ios) { var m = document.querySelector('link[rel="manifest"]'); if (m) m.parentNode.removeChild(m); }
+// Son icône garde l'adresse affichée : on y met celle de la porte d'entrée (./). Dans cet onglet, la porte d'entrée
+// ramène ici (marque « emploi ») : recharger la page ne fait donc jamais quitter le mode d'emploi.
+// Android n'en a pas besoin : l'installation lit l'adresse de départ dans le manifeste.
+if (ios) {
+  var m = document.querySelector('link[rel="manifest"]'); if (m) m.parentNode.removeChild(m);
+  try { sessionStorage.setItem('emploi', '1'); history.replaceState(null, '', './'); } catch (e) {}
+}
 // Android : quand Chrome le permet, un bouton installe l'icône d'un seul geste.
 var invite = null;
 window.addEventListener('beforeinstallprompt', function (e) {
