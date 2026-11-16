@@ -26,6 +26,9 @@ li::before{content:counter(pas);flex:none;width:28px;height:28px;border-radius:5
 b{font-weight:650}
 .autre{display:none}
 .voir-autre{display:block;width:100%;margin:4px 0 18px;padding:12px;border:1px solid #DCE4E7;border-radius:12px;background:transparent;color:#2E7F90;font:inherit;font-weight:600}
+.installer{display:block;width:100%;margin:0 0 12px;padding:14px;border:0;border-radius:12px;background:#343436;color:#fff;font:inherit;font-weight:650}
+.ou{color:#62686B;font-size:14px;margin:0 0 10px}
+[hidden]{display:none!important}
 .bas{color:#62686B;font-size:14px;text-align:center;margin-top:18px}
 .bas a{color:#2E7F90;font-weight:600}
 </style>
@@ -47,11 +50,13 @@ b{font-weight:650}
 
   <section id="android">
     <h2>Sur Android</h2>
+    <button class="installer" id="installer" hidden>Installer l'icône</button>
+    <p class="ou" id="ou" hidden>Si le bouton ne fait rien :</p>
     <ol>
       <li><span>Ouvre cette page dans <b>Chrome</b>.</span></li>
       <li><span>Touche les <b>trois points</b> en haut à droite.</span></li>
       <li><span>Choisis <b>Ajouter à l'écran d'accueil</b>.</span></li>
-      <li><span>Touche <b>Ajouter</b>.</span></li>
+      <li><span>Choisis <b>Installer</b> (et non « Créer un raccourci »), puis confirme.</span></li>
     </ol>
   </section>
 
@@ -67,6 +72,19 @@ try { history.replaceState(null, '', './'); } catch (e) {}
 var ua = navigator.userAgent || '';
 var android = /Android/.test(ua);
 var ios = !android && (/iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
+// iPhone : sans manifeste, l'icône ouvre Safari, où le compte Google est déjà connu.
+if (ios) { var m = document.querySelector('link[rel="manifest"]'); if (m) m.parentNode.removeChild(m); }
+// Android : quand Chrome le permet, un bouton installe l'icône d'un seul geste.
+var invite = null;
+window.addEventListener('beforeinstallprompt', function (e) {
+  e.preventDefault(); invite = e;
+  document.getElementById('installer').hidden = false; document.getElementById('ou').hidden = false;
+});
+document.getElementById('installer').onclick = function () { if (invite) { invite.prompt(); invite = null; } };
+window.addEventListener('appinstalled', function () {
+  document.getElementById('installer').hidden = true;
+  document.getElementById('ou').textContent = "C'est installé : l'icône « Méta'verse » est sur ton écran d'accueil (ou dans la liste de tes applications).";
+});
 if (ios || android) {
   var cache = document.getElementById(ios ? 'android' : 'iphone'), bouton = document.getElementById('bascule');
   cache.className = 'autre';
