@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Méta'verse</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icone-180.png">
+<link rel="icon" href="icone-192.png">
+<meta name="apple-mobile-web-app-title" content="Méta'verse">
+<meta name="theme-color" content="#343436">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#F5F8F9;color:#343436;font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+main{max-width:520px;margin:0 auto;padding:28px 20px 40px}
+.tete{display:flex;align-items:center;gap:16px;margin-bottom:8px}
+.tete img{width:72px;height:72px;border-radius:17px;box-shadow:0 4px 14px rgba(52,52,54,.25)}
+h1{font-size:24px;line-height:1.2;margin:0}
+.sous{color:#62686B;margin:0 0 22px}
+section{background:#fff;border:1px solid #DCE4E7;border-radius:16px;padding:18px 18px 8px;margin-bottom:14px}
+h2{font-size:17px;margin:0 0 10px}
+ol{margin:0;padding:0;list-style:none;counter-reset:pas}
+li{counter-increment:pas;display:flex;gap:12px;margin-bottom:12px}
+li::before{content:counter(pas);flex:none;width:28px;height:28px;border-radius:50%;background:#C9E7EF;color:#2E7F90;font-weight:700;display:flex;align-items:center;justify-content:center}
+b{font-weight:650}
+.autre{display:none}
+.voir-autre{display:block;width:100%;margin:4px 0 18px;padding:12px;border:1px solid #DCE4E7;border-radius:12px;background:transparent;color:#2E7F90;font:inherit;font-weight:600}
+.bas{color:#62686B;font-size:14px;text-align:center;margin-top:18px}
+.bas a{color:#2E7F90;font-weight:600}
+</style>
+</head>
+<body>
+<main>
+  <div class="tete"><img src="icone-192.png" alt=""><h1>Le Méta'verse sur ton téléphone</h1></div>
+  <p class="sous">Une icône sur ton écran d'accueil, et tu y es d'un geste. À faire une seule fois.</p>
+
+  <section id="iphone">
+    <h2>Sur iPhone</h2>
+    <ol>
+      <li><span>Ouvre cette page dans <b>Safari</b>.</span></li>
+      <li><span>Touche le bouton <b>Partager</b> (le carré avec une flèche vers le haut).</span></li>
+      <li><span>Choisis <b>Sur l'écran d'accueil</b>. Si une case « Ouvrir comme app web » apparaît, <b>décoche-la</b>.</span></li>
+      <li><span>Touche <b>Ajouter</b>.</span></li>
+    </ol>
+  </section>
+
+  <section id="android">
+    <h2>Sur Android</h2>
+    <ol>
+      <li><span>Ouvre cette page dans <b>Chrome</b>.</span></li>
+      <li><span>Touche les <b>trois points</b> en haut à droite.</span></li>
+      <li><span>Choisis <b>Ajouter à l'écran d'accueil</b>.</span></li>
+      <li><span>Touche <b>Ajouter</b>.</span></li>
+    </ol>
+  </section>
+
+  <button class="voir-autre" id="bascule" hidden>Voir pour l'autre type de téléphone</button>
+
+  <p class="bas">La première fois, Google te demande ton compte METASPORTS.<br>
+  <a href="./">Ouvrir le Méta'verse maintenant</a></p>
+</main>
+<script>
+// L'icône doit garder l'adresse de la porte d'entrée (./), pas celle de ce mode d'emploi.
+try { history.replaceState(null, '', './'); } catch (e) {}
+// On ne montre que le téléphone de la personne ; un bouton donne l'autre.
+var ua = navigator.userAgent || '';
+var android = /Android/.test(ua);
+var ios = !android && (/iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
+if (ios || android) {
+  var cache = document.getElementById(ios ? 'android' : 'iphone'), bouton = document.getElementById('bascule');
+  cache.className = 'autre';
+  bouton.hidden = false;
+  bouton.onclick = function () { cache.style.display = 'block'; bouton.hidden = true; };
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Méta'verse</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icone-180.png">
+<link rel="icon" href="icone-192.png">
+<meta name="apple-mobile-web-app-title" content="Méta'verse">
+<meta name="theme-color" content="#343436">
+<style>
+html,body{height:100%;margin:0}
+body{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;background:#343436;color:#fff;font:600 17px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;text-align:center;padding:24px;box-sizing:border-box}
+img{width:96px;height:96px;border-radius:22px}
+a{color:#343436;background:#94D2DE;padding:14px 22px;border-radius:12px;text-decoration:none}
+</style>
+</head>
+<body>
+<!-- Porte d'entrée de l'icône « Méta'verse » de l'écran d'accueil : elle ouvre aussitôt le Méta'verse (page Google, connexion Google). Rien de privé ici. -->
+<img src="icone-192.png" alt="">
+<a id="ouvrir" href="https://script.google.com/a/macros/metasports.fr/s/AKfycbykckuBffl6P-GbllPfUTx4w87-5AsPyBc832FzRxU35mHxaYIFk7OEr_TeLd6O4f12/exec">Ouvrir le Méta'verse</a>
+<script>
+// revenu ici par « retour » : on laisse le bouton, sans renvoyer une seconde fois
+var retour = false;
+try { retour = sessionStorage.getItem('parti') === '1'; sessionStorage.setItem('parti', '1'); } catch (e) {}
+if (!retour) location.href = document.getElementById('ouvrir').href;
+</script>
+</body>
+</html>
